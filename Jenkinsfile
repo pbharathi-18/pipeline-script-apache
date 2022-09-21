@@ -5,15 +5,15 @@ pipeline {
         stage('CI') {
             steps {
                 sh 'zip -r apache-html-$BUILD_NUMBER.zip *'
-                sh 'aws s3 cp apache-html-$BUILD_NUMBER.zip s3://artifactory-cicd-html/'
+                sh 'aws s3 cp apache-html-$BUILD_NUMBER.zip s3://cicd-jenkins-appache/'
             }
         }
         stage('CD') {
             steps {
                 sh 'rm -fr *'
-                sh 'aws s3 cp s3://artifactory-cicd-html/apache-html-$BUILD_NUMBER.zip .'
+                sh 'aws s3 cp s3://cicd-jenkins-appache/apache-html-$BUILD_NUMBER.zip .'
                 sh 'unzip apache-html-$BUILD_NUMBER.zip'
-                sh 'scp index.html root@172.31.15.72:/var/www/html/'
+                sh 'scp index.html root@10.1.1.155:/var/www/html/'
             }
         }
     }
